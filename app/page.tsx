@@ -1,9 +1,9 @@
 const projects = [
   {
-    name: "Stock Picker",
-    description: "Autonomous day trading system built on Ross Cameron's strategy.",
+    name: "jReader",
+    description: "RSVP speed reader for EPUBs and PDFs. Upload a book, read faster.",
     status: "in progress",
-    href: "#",
+    href: "https://reader.jbirdsall.dev",
   },
   {
     name: "Coming Soon",
