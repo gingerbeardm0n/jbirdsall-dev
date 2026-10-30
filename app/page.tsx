@@ -84,7 +84,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Joel Birdsall",
-  url: "https://jbirdsall.dev",
+  url: "https://www.jbirdsall.dev",
   jobTitle: "AI-native software engineer",
   description:
     "Builds MCP servers and AI agent workflows that plug AI into the tools teams already use.",

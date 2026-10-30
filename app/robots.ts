@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://jbirdsall.dev/sitemap.xml",
+    sitemap: "https://www.jbirdsall.dev/sitemap.xml",
   };
 }

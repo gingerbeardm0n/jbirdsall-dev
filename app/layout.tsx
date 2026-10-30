@@ -19,7 +19,7 @@ const description =
   "Joel Birdsall builds MCP servers and AI agent workflows that plug AI into the tools teams already use: Jira, repos, logs, and deploys. Full-stack React/TypeScript and Java engineer based in Columbus, Ohio.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jbirdsall.dev"),
+  metadataBase: new URL("https://www.jbirdsall.dev"),
   title,
   description,
   alternates: { canonical: "/" },
