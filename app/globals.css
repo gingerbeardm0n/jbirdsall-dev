@@ -1,10 +1,133 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
   background-color: #1e1e1e;
+}
+
+/* Boot sequence: the name settles in, then the badges pop in one at a time. */
+@keyframes boot-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes badge-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Each hero line prints in order, top to bottom; delays are set inline per element. */
+.boot-line {
+  animation: boot-in 0.45s ease-out both;
+}
+
+/* Everything below the hero fades in once, together, as the hero finishes. */
+.boot-rest {
+  animation: boot-in 0.6s ease-out 1.6s both;
+}
+
+.boot-badge {
+  animation: badge-pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+}
+
+/* Terminal caret for the typed status line. */
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+/* Project cards: a light traces the border in the card's own syntax color on hover/focus. */
+@property --beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes beam-spin {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+
+.beam-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.beam-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 180deg,
+    var(--beam) 300deg,
+    #ffffff 340deg,
+    transparent 360deg
+  );
+  filter: drop-shadow(0 0 4px var(--beam));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.beam-card:hover::before,
+.beam-card:focus-visible::before {
+  opacity: 1;
+  animation: beam-spin 2.4s linear infinite;
+}
+
+/* Tint the resting border toward the card's color so the whole edge reads, not just the moving light. */
+.beam-card:hover,
+.beam-card:focus-visible {
+  border-color: color-mix(in srgb, var(--beam) 40%, #3e3e42);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-line,
+  .boot-rest,
+  .boot-badge,
+  .caret {
+    animation: none;
+  }
+
+  /* Keep a static colored edge so hover/focus still reads. */
+  .beam-card:hover::before,
+  .beam-card:focus-visible::before {
+    animation: none;
+    background: var(--beam);
+  }
 }
