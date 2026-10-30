@@ -1,3 +1,5 @@
+import StatusLine from "./status-line";
+
 type Project = {
   name: string;
   description: string;
@@ -37,6 +39,32 @@ const projects: Project[] = [
   },
 ];
 
+// Pastel badges pulled from the VS Code dark syntax palette the site already uses.
+const badges = [
+  { label: "agent wrangler", color: "#c586c0" },
+  { label: "MCP builder", color: "#dcdcaa" },
+  { label: "AI-curious, AI-employed", color: "#ce9178" },
+  { label: "Columbus, OH", color: "#9cdcfe" },
+];
+
+const services = [
+  {
+    name: "MCP servers & integrations",
+    description:
+      "Custom tools that let AI agents read the ticket, check the logs, and know what's deployed where — instead of guessing.",
+  },
+  {
+    name: "Agentic dev workflows",
+    description:
+      "Skills, steering files, knowledge bases, and AI review loops that make a whole team faster, not just one person with a chatbot.",
+  },
+  {
+    name: "Full-stack underneath",
+    description:
+      "Six years of React/TypeScript, Java (Spring, Quarkus), GraphQL, and Python — so the AI stuff ships into real production systems.",
+  },
+];
+
 const otherWork = [
   { name: "jCoin", description: "24/7 crypto-perps momentum scalping bot." },
   { name: "jSwing", description: "Autonomous US-equities swing-trading algo." },
@@ -55,12 +83,29 @@ export default function Home() {
           <h1 className="text-5xl font-bold tracking-tight text-[#d4d4d4]">
             Joel Birdsall
           </h1>
-          <span className="mt-3 text-xs px-3 py-1 rounded-full border border-[#2a5040] bg-[#1b3a2e] text-[#4ec9b0] font-mono">
-            open to roles
-          </span>
+          <div className="mt-3 flex gap-2 flex-wrap">
+            {badges.map((badge) => (
+              <span
+                key={badge.label}
+                className="text-xs px-3 py-1 rounded-full border font-mono"
+                style={{
+                  color: badge.color,
+                  borderColor: `${badge.color}4d`,
+                  backgroundColor: `${badge.color}1a`,
+                }}
+              >
+                {badge.label}
+              </span>
+            ))}
+          </div>
         </div>
-        <p className="text-xl text-[#858585] max-w-xl">
-          Software engineer. Games, tools, dashboards, bots — if it seems fun to build, I build it.
+        <p className="text-xl text-[#d4d4d4] max-w-xl">
+          AI-native software engineer.
+        </p>
+        <p className="text-lg text-[#858585] max-w-xl leading-relaxed">
+          I build MCP servers and agent workflows that plug AI into the tools teams already live in — Jira, repos, logs, deploys.
+          Every week I find something new it can do, and something it confidently can&apos;t.
+          I&apos;m probably more excited about this stuff than is strictly professional.
         </p>
         <div className="flex gap-4 pt-2 text-sm text-[#569cd6]">
           <a
@@ -71,14 +116,50 @@ export default function Home() {
           >
             GitHub
           </a>
+          <a
+            href="https://linkedin.com/in/joel-birdsall"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#9cdcfe] transition-colors"
+          >
+            LinkedIn
+          </a>
+          <a
+            href="mailto:joel.birdsall@gmail.com"
+            className="hover:text-[#9cdcfe] transition-colors"
+          >
+            Email
+          </a>
         </div>
+      </section>
+
+      {/* What I do */}
+      <section className="flex flex-col gap-6">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[#6a9955] select-none">{"// "}</span>
+          <h2 className="text-2xl font-semibold text-[#d4d4d4]">What I do</h2>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {services.map((service) => (
+            <div
+              key={service.name}
+              className="flex flex-col gap-2 rounded-xl border border-[#3e3e42] bg-[#252526] p-5"
+            >
+              <span className="font-medium text-zinc-100">{service.name}</span>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                {service.description}
+              </p>
+            </div>
+          ))}
+        </div>
+        <StatusLine />
       </section>
 
       {/* Projects */}
       <section className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
           <span className="font-mono text-[#6a9955] select-none">{"// "}</span>
-          <h2 className="text-2xl font-semibold text-[#d4d4d4]">Projects</h2>
+          <h2 className="text-2xl font-semibold text-[#d4d4d4]">Things I&apos;ve built for fun</h2>
         </div>
         <div className="grid gap-4 grid-cols-2">
           {projects.map((project) => (
