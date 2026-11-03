@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import BackgroundGlow from "./background-glow";
 
 const plexSans = IBM_Plex_Sans({
   variable: "--font-plex-sans",
@@ -47,7 +48,8 @@ export default function RootLayout({
       lang="en"
       className={`${plexSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans text-[#d4d4d4]" style={{ backgroundColor: '#1e1e1e' }}>
+      <body className="relative min-h-full flex flex-col font-sans text-[#d4d4d4]" style={{ backgroundColor: '#1e1e1e' }}>
+        <BackgroundGlow />
         {children}
         <Analytics />
       </body>

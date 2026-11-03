@@ -116,6 +116,145 @@ body {
   border-color: color-mix(in srgb, var(--beam) 40%, #3e3e42);
 }
 
+/* Page background, styled like an open editor. Layers, back to front: gradient + grain
+   (fixed), dim code + line-number gutter (scroll with the page), then the pointer glow,
+   which also reveals brighter copies of the code and the current line number. */
+.bg-editor {
+  --mx: 70vw;
+  --my: 20vh;
+  --px: 70vw;
+  --py: 20vh;
+  --line-top: -100px;
+  pointer-events: none;
+}
+
+.bg-editor__base,
+.bg-editor__light {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.bg-editor__base {
+  background:
+    radial-gradient(ellipse at 50% 30%, transparent 40%, rgb(0 0 0 / 0.35) 100%),
+    linear-gradient(180deg, #1c2128 0%, #1e1e1e 55%, #19191a 100%);
+}
+
+/* Film grain, blended over the gradient. */
+.bg-editor__base::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.bg-editor__page {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bg-editor__light {
+  background:
+    radial-gradient(520px circle at var(--mx) var(--my), rgb(197 134 192 / 0.1), transparent 60%),
+    radial-gradient(260px circle at var(--mx) var(--my), rgb(78 201 176 / 0.07), transparent 70%);
+}
+
+/* Code sits in the right margin, clear of the hero text. */
+.bg-code {
+  position: absolute;
+  inset: 0;
+  display: none;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre;
+  color: #d4d4d4;
+}
+
+.bg-code__snippet {
+  position: absolute;
+}
+
+/* Left margin: from just past the gutter to the content edge (content is 960px wide,
+   centered), fading out left to right so it melts away before the real text. */
+.bg-code__side {
+  left: 64px;
+  width: calc(50% - 480px - 64px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, #000 15%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 15%, transparent 100%);
+}
+
+.bg-code--dim {
+  opacity: 0.035;
+}
+
+.bg-code--lit {
+  opacity: 0.32;
+  -webkit-mask-image: radial-gradient(220px circle at var(--px) var(--py), #000, transparent 75%);
+  mask-image: radial-gradient(220px circle at var(--px) var(--py), #000, transparent 75%);
+}
+
+.tok-k { color: #c586c0; }
+.tok-s { color: #ce9178; }
+.tok-f { color: #dcdcaa; }
+.tok-t { color: #4ec9b0; }
+.tok-c { color: #6a9955; }
+.tok-v { color: #9cdcfe; }
+
+.bg-gutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+  width: 52px;
+  padding: 12px 12px 0 0;
+  border-right: 1px solid rgb(255 255 255 / 0.035);
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: right;
+  white-space: pre;
+  color: rgb(133 133 133 / 0.22);
+}
+
+.bg-gutter--lit {
+  border-right-color: transparent;
+  color: rgb(78 201 176 / 0.7);
+  -webkit-mask-image: linear-gradient(transparent var(--line-top), #000 var(--line-top), #000 calc(var(--line-top) + 24px), transparent calc(var(--line-top) + 24px));
+  mask-image: linear-gradient(transparent var(--line-top), #000 var(--line-top), #000 calc(var(--line-top) + 24px), transparent calc(var(--line-top) + 24px));
+}
+
+/* Current-line highlight band, like an editor's cursor line. */
+.bg-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--line-top);
+  height: 24px;
+  display: none;
+  background: rgb(255 255 255 / 0.012);
+}
+
+@media (min-width: 640px) and (hover: hover) {
+  .bg-gutter,
+  .bg-line {
+    display: block;
+  }
+}
+
+@media (min-width: 1200px) {
+  .bg-code {
+    display: block;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .boot-line,
   .boot-rest,
